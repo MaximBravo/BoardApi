@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Relative layout for whole screen
     private RelativeLayout mainContent;
+
+    //Board creation
+    private Board board;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +45,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //BoardMaker Creation
+        //Width of screen
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int width = displaymetrics.widthPixels;
 
+        //Board Initialization
+        board = new Board(MainActivity.this, mainContent, width);
     }
 
     @Override
