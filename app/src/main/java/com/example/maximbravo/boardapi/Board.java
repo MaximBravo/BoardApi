@@ -78,11 +78,14 @@ public class Board {
 
         final float scale = parentActivity.getApplicationContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (cellSideLength * scale + 0.5f);
-        int margin = pixels/fraction;
+        //int margin = pixels/fraction;
+        //margin for checkers
+        int margin = 0;
         //int pixels = widthOfCell;
         LinearLayout boardLinear = new LinearLayout(parentActivity.getApplicationContext());
         boardLinear.setOrientation(LinearLayout.VERTICAL);
         int count = 1;
+        boolean red = true;
         for(int rows = 0; rows < boardWidth; rows++) {
             LinearLayout l = new LinearLayout(parentActivity.getApplicationContext());
             l.setOrientation(LinearLayout.HORIZONTAL);
@@ -103,8 +106,17 @@ public class Board {
                 // nextInt is normally exclusive of the top value,
                 // so add 1 to make it inclusive
                 int randomNum = rand.nextInt((15 - 1) + 1) + 1;
-
-                right.setBackgroundColor(Color.BLUE);
+                if(red) {
+                    right.setBackgroundColor(Color.RED);
+                    if(columns != boardWidth-1) {
+                        red = false;
+                    }
+                } else {
+                    right.setBackgroundColor(Color.BLACK);
+                    if(columns != boardWidth-1) {
+                        red = true;
+                    }
+                }
                 l.addView(right);
                 currentCell.parseTextView(right);
                 count++;
