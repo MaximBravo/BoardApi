@@ -1,5 +1,6 @@
 package com.example.maximbravo.boardapi;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,15 +49,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Status bar height
+
+        int statusBarHeight = getStatusBarHeight();
+
+        //toolbarHeight
+        int toolbarheight = toolbar.getMeasuredHeight();
+
         //Width of screen
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int width = displaymetrics.widthPixels;
-        int height = displaymetrics.heightPixels;
+        int height = (int) (displaymetrics.heightPixels - mainContent.getY() - toolbarheight);
         //Board Initialization
-        board = new Board(MainActivity.this, mainContent, R.id.content_main, BOARD_SIZE, BOARD_SIZE, width, height, Math.min(height, width)/(BOARD_SIZE+2) - 4);
+        board = new Board(MainActivity.this, mainContent, R.id.content_main, BOARD_SIZE, BOARD_SIZE, width, height, Math.min(height, width)/(BOARD_SIZE+2) - 4, statusBarHeight);
     }
 
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -71,8 +88,14 @@ public class MainActivity extends AppCompatActivity {
             //the value of x and y starting from mainContent
             int realX = x;
             int realY = y - mainContentY;
+
+            int width = mainContent.getWidth();
+            int height = mainContent.getHeight();
+
             //set output text to x and y coordinates of touch
             output.setText("You are touching the screen at: " + realX + ", " + realY);
+            int viewId = board.isOnView(x, y);//board.getViewTouchingId(x, y);
+            output.append("\nThe id that is touching is: " + viewId);
         } else {
             //set output text if not touching the screen
             output.setText("You are not touching the screen! :(");

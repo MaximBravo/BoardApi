@@ -19,6 +19,7 @@ public class Cell {
 
     private int cellYPos;
 
+    private int cellMargin;
     private int cellWidth;
     private int cellHeight;
 
@@ -64,6 +65,10 @@ public class Cell {
 
     public int getCellYPos() {
         return cellYPos;
+    }
+
+    public void addMargin(int margin){
+        cellMargin = margin;
     }
 
 }
