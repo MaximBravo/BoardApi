@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Board creation
     private Board board;
+
+    private final int BOARD_SIZE = 8;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int width = displaymetrics.widthPixels;
-
+        int height = displaymetrics.heightPixels;
         //Board Initialization
-        board = new Board(MainActivity.this, mainContent, width);
+        board = new Board(MainActivity.this, mainContent, R.id.content_main, BOARD_SIZE, BOARD_SIZE, width, height, Math.min(height, width)/(BOARD_SIZE+2) - 4);
     }
 
     @Override
