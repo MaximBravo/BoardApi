@@ -9,11 +9,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     //Textview representing output textview
     private TextView output;
+
+    //Relative layout for whole screen
+    private RelativeLayout mainContent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
         //initialize output textview
         output = (TextView) findViewById(R.id.output_textview);
+
+        //initialize output RelativeLayout
+        mainContent = (RelativeLayout) findViewById(R.id.content_main);
 
         //fab stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,10 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         //if finger is on screen or not
         if(event.getAction() != MotionEvent.ACTION_UP){
-            //set output text if touching the screen
-            output.setText("You are touching the screen! :)");
+            //x value of press
+            int x = (int) event.getX();
+            //y value of press
+            int y = (int) event.getY();
+            //y value of main content for offset later
+            int mainContentY = (int) mainContent.getY();
+
+            //the value of x and y starting from mainContent
+            int realX = x;
+            int realY = y - mainContentY;
+            //set output text to x and y coordinates of touch
+            output.setText("You are touching the screen at: " + realX + ", " + realY);
         } else {
             //set output text if not touching the screen
             output.setText("You are not touching the screen! :(");
