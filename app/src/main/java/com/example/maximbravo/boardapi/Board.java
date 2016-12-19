@@ -74,6 +74,16 @@ public class Board {
     }
 
     private static final int fraction = 20;
+    int[][] initialScheme = {
+            {Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK},
+            {Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED},
+            {Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK},
+            {Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK_ON_BLACK, Cell.STATE_BLACK_ON_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED},
+            {Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK},
+            {Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED},
+            {Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK},
+            {Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_BLACK, Cell.STATE_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED, Cell.STATE_RED_ON_BLACK, Cell.STATE_RED_ON_RED}
+    };
     public void makeBoard(){
 
         final float scale = parentActivity.getApplicationContext().getResources().getDisplayMetrics().density;
@@ -105,20 +115,11 @@ public class Board {
 
                 // nextInt is normally exclusive of the top value,
                 // so add 1 to make it inclusive
-                int randomNum = rand.nextInt((15 - 1) + 1) + 1;
-                if(red) {
-                    right.setBackgroundColor(Color.RED);
-                    if(columns != boardWidth-1) {
-                        red = false;
-                    }
-                } else {
-                    right.setBackgroundColor(Color.BLACK);
-                    if(columns != boardWidth-1) {
-                        red = true;
-                    }
-                }
+                right.setBackgroundResource(convertToId(initialScheme[columns][rows]));
+
                 l.addView(right);
                 currentCell.parseTextView(right);
+                currentCell.addState(initialScheme[columns][rows]);
                 count++;
                 board[columns][rows] = currentCell;
             }
@@ -162,7 +163,30 @@ public class Board {
 
     }
 
+    public int convertToId(int state){
+        switch(state){
+            case Cell.STATE_BLACK:
+                return R.drawable.black;
 
+            case Cell.STATE_RED:
+                return  R.drawable.red;
+
+            case Cell.STATE_BLACK_ON_BLACK:
+                return  R.drawable.blackonblack;
+
+            case Cell.STATE_RED_ON_RED:
+                return R.drawable.redonred;
+
+            case Cell.STATE_BLACK_ON_RED:
+                return R.drawable.blackonred;
+
+            case Cell.STATE_RED_ON_BLACK:
+                return R.drawable.redonblack;
+
+            default:
+                return -1;
+        }
+    }
     private String tempSummary = "";
 
     public void addAllXYPositions(int boardId){

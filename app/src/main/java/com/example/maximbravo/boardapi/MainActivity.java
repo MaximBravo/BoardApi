@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
             int width = mainContent.getWidth();
             int height = mainContent.getHeight();
 
+
+            playGame(x, y, realX, realY);
             //set output text to x and y coordinates of touch
-            output.setText("You are touching the screen at: " + realX + ", " + realY);
-            int viewId = board.isOnView(x, y);//board.getViewTouchingId(x, y);
-            output.append("\nThe id that is touching is: " + viewId);
+
         } else {
             //set output text if not touching the screen
             output.setText("You are not touching the screen! :(");
@@ -103,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    
+    public void playGame(int x, int y, int realX, int realY){
+        output.setText("You are touching the screen at: " + realX + ", " + realY);
+        int viewId = board.isOnView(x, y);//board.getViewTouchingId(x, y);
+        output.append("\nThe id that is touching is: " + viewId);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
